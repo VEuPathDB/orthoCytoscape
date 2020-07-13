@@ -20,78 +20,14 @@ const stylesheet = cytoscape.stylesheet()
     'background-color': 'white',
     'border-color': 'black',
     'border-width': 1,
-    'pie-size': '100%',
-    'pie-1-background-color': 'data(ec1color)',
-    'pie-1-background-size': 'data(ec1pct)',
-    'pie-2-background-color': 'data(ec2color)',
-    'pie-2-background-size': 'data(ec2pct)',
-    'pie-3-background-color': 'data(ec3color)',
-    'pie-3-background-size': 'data(ec3pct)',
-    'pie-4-background-color': 'data(ec4color)',
-    'pie-4-background-size': 'data(ec4pct)',
-    'pie-5-background-color': 'data(ec5color)',
-    'pie-5-background-size': 'data(ec5pct)',
-    'pie-6-background-color': 'data(ec6color)',
-    'pie-6-background-size': 'data(ec6pct)',
-    'pie-7-background-color': 'data(ec7color)',
-    'pie-7-background-size': 'data(ec7pct)',
-    'pie-8-background-color': 'data(ec8color)',
-    'pie-8-background-size': 'data(ec8pct)',
-    'pie-9-background-color': 'data(ec9color)',
-    'pie-9-background-size': 'data(ec9pct)',
-    'pie-10-background-color': 'data(ec10color)',
-    'pie-10-background-size': 'data(ec10pct)',
-    'pie-11-background-color': 'data(ec11color)',
-    'pie-11-background-size': 'data(ec11pct)',
-    'pie-12-background-color': 'data(ec12color)',
-    'pie-12-background-size': 'data(ec12pct)',
-    'pie-13-background-color': 'data(ec13color)',
-    'pie-13-background-size': 'data(ec13pct)',
-    'pie-14-background-color': 'data(ec14color)',
-    'pie-14-background-size': 'data(ec14pct)',
-    'pie-15-background-color': 'data(ec15color)',
-    'pie-15-background-size': 'data(ec15pct)',
-    'pie-16-background-color': 'data(ec16color)',
-    'pie-16-background-size': 'data(ec16pct)'
+    ...makePieStyles(16, 'ec')
   })
   .selector('node.pfam')
   .css({
     'background-color': 'white',
     'border-color': 'black',
     'border-width': 1,
-    'pie-size': '100%',
-    'pie-1-background-color': 'data(pfam1color)',
-    'pie-1-background-size': 'data(pfam1pct)',
-    'pie-2-background-color': 'data(pfam2color)',
-    'pie-2-background-size': 'data(pfam2pct)',
-    'pie-3-background-color': 'data(pfam3color)',
-    'pie-3-background-size': 'data(pfam3pct)',
-    'pie-4-background-color': 'data(pfam4color)',
-    'pie-4-background-size': 'data(pfam4pct)',
-    'pie-5-background-color': 'data(pfam5color)',
-    'pie-5-background-size': 'data(pfam5pct)',
-    'pie-6-background-color': 'data(pfam6color)',
-    'pie-6-background-size': 'data(pfam6pct)',
-    'pie-7-background-color': 'data(pfam7color)',
-    'pie-7-background-size': 'data(pfam7pct)',
-    'pie-8-background-color': 'data(pfam8color)',
-    'pie-8-background-size': 'data(pfam8pct)',
-    'pie-9-background-color': 'data(pfam9color)',
-    'pie-9-background-size': 'data(pfam9pct)',
-    'pie-10-background-color': 'data(pfam10color)',
-    'pie-10-background-size': 'data(pfam10pct)',
-    'pie-11-background-color': 'data(pfam11color)',
-    'pie-11-background-size': 'data(pfam11pct)',
-    'pie-12-background-color': 'data(pfam12color)',
-    'pie-12-background-size': 'data(pfam12pct)',
-    'pie-13-background-color': 'data(pfam13color)',
-    'pie-13-background-size': 'data(pfam13pct)',
-    'pie-14-background-color': 'data(pfam14color)',
-    'pie-14-background-size': 'data(pfam14pct)',
-    'pie-15-background-color': 'data(pfam15color)',
-    'pie-15-background-size': 'data(pfam15pct)',
-    'pie-16-background-color': 'data(pfam16color)',
-    'pie-16-background-size': 'data(pfam16pct)'
+    ...makePieStyles(16, 'pfam')
   })
   .selector('edge')
   .css({
@@ -102,6 +38,22 @@ const stylesheet = cytoscape.stylesheet()
     'z-index-compare': 'manual',
     'z-index': 1
   });
+
+function makePieStyles(nSlices, dataPrefix) {
+  const sliceStyles = new Array(nSlices).fill().reduce(
+    (memo, _, i) => ({
+      ...memo,
+      [`pie-${i + 1}-background-color`]: `data(${dataPrefix}${i + 1}color)`,
+      [`pie-${i + 1}-background-size`]: `data(${dataPrefix}${i + 1}pct)`
+    }),
+    {}
+  );
+
+  return {
+    'pie-size': '100%',
+    ...sliceStyles
+  };
+}
 
 const selectNodeStyleSheet = cytoscape.stylesheet()
   .selector('node')
